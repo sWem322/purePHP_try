@@ -1,0 +1,8 @@
+AddType text/html ".html"
+
+RewriteEngine  on
+
+RewriteBase "/"
+
+RewriteCond "%{REQUEST_URI}" "!/(front|.*php)"
+RewriteRule "^(.*)$" "/front/$1" [L,R]

@@ -17,9 +17,7 @@ $conn = connect();
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-?>
 
-<?php
 //запрос в бд
 $firstRequest = "SELECT device_uuid, device_type, device_name, device_updated FROM device";
 // $jsonRequest  = "SELECT device_endpoints FROM device";
