@@ -6,8 +6,8 @@ $model = new Spaceweb_db;
 $model->connect('127.0.0.1', 'space_web', 'Ie6fenge','space_web');
 
 $session = new \spaceWeb\Session($model);
-// session_set_save_handler($session);
-// session_start();
+session_set_save_handler($session, true);
+session_start();
 
 
 $controller = new \spaceWeb\Controller($model, $session, $_GET);

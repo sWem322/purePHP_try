@@ -36,7 +36,6 @@ class Spaceweb_db {
         $stmt->execute();
         $result = $stmt->get_result();
         $array = array();
-        $comma  = false;
         if ($result) {
             while ($row = $result->fetch_array()) {
                 $array[] = [
@@ -114,6 +113,80 @@ class Spaceweb_db {
             echo ']';
         } else {
             echo 'o results';
+        }
+    }
+
+
+
+
+
+
+    public function session_read($id) {
+        $stmt = $this->mysqli->prepare('SELECT session_data FROM sessions
+        WHERE session_id = ? AND session_expires > date("Y-m-d H:i:s")');
+
+        $stmt->bind_param('s', $id);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        if($row = $result->fetch_array()) {
+            return $row['session_data'];
+        } else {
+            return false;
+        }
+    }
+
+
+    /**
+     * dateTime must be only INT !
+     */
+    public function session_write ($id, $data) {
+        $dateTime = date ('Y-m-d H:i:s');
+
+        $stmt = $this->mysqli->prepare('REPLACE INTO sessions
+        SET session_id = ?, session_expires = ?, session_data = ?');
+
+        $stmt->bind_param('sis', $id, $dateTime, $data);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+
+    public function session_destroy($id) {
+        $stmt = $this->mysqli->prepare('DELETE FROM sessions WHERE session_id = ?');
+        $stmt->bind_param('s', $id);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        if ($result) {
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
+    public function session_gc($maxlifetime) {
+        $stmt = $this->mysqli->prepare('DELETE FROM sessions WHERE ((UNIX_TIMESTAMP(session_expires) + ?) < ?)');
+        $stmt->bind_param('ii', $maxlifetime, $maxlifetime);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+
+        if($result){
+            return true;
+        }else{
+            return false;
         }
     }
 }

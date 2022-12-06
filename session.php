@@ -3,22 +3,34 @@ namespace spaceWeb;
 
 use SessionHandlerInterface;
 
-// class Session implements SessionHandlerInterface{
-//     function __construct($model)
-//     {
-//         $this->model = $model;
-//     }
+class Session implements SessionHandlerInterface {
 
-//     function initialize() : bool {
-        
-//     }
-//     public close(): bool
-//     public destroy(string $id): bool
-//     public gc(int $max_lifetime): int|false
-//     public open(string $path, string $name): bool
-//     public read(string $id): string|false
-//     public write(string $id, string $data): bool
-//     }
-class Session {
+    function __construct($model)
+    {
+        $this->model = $model;
+    }
 
+    public function open ($savePath, $sessionName) : bool {
+        return true;
+    }
+    public function close () : bool {
+        return true;
+    }
+
+    public function read($id) : string {      
+        return $this->model->session_read($id);
+    }
+
+    public function write($id, $data) : bool {
+        return $this->model->session_write($id, $data);
+    }
+
+    public function destroy($id) : bool {
+        return $this->model->session_destroy($id);
+    }
+
+    public function gc($maxlifetime) : bool {
+        return $this->model->session_gc($maxlifetime);
+    }
 }
+
