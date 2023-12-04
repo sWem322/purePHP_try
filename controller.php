@@ -1,9 +1,12 @@
 <?php
+
 namespace spaceWeb;
+
 /**
  * routing
  */
-class Controller {
+class Controller
+{
     /**
      * database model
      */
@@ -19,7 +22,6 @@ class Controller {
      */
     var $request;
 
-    var $array;
     /**
      * Это конструктор
      */
@@ -30,26 +32,26 @@ class Controller {
         $this->request = $request;
     }
 
-    public function path_device_list() {
-      $list = $this->model->device_list();
-
-       echo json_encode($list);
-    }
-
-    public function path_device_info() {
-       $list = $this->model->device_info($this->request["device_info"]);
+    public function path_device_list()
+    {
+        $list = $this->model->device_list();
 
         echo json_encode($list);
     }
-    public function path_measurment_list() {
+
+    public function path_device_info()
+    {
+        $list = $this->model->device_info($this->request["device_info"]);
+
+        echo json_encode($list);
+    }
+
+    public function path_measurment_list()
+    {
         \ob_start();
         $this->model->measurment_list($this->request["device_info"]);
         $result = \ob_get_clean();
 
         echo $result;
     }
-    public function default() {
-        echo 'Error';
-    }
-
 }

@@ -1,0 +1,18 @@
+version: '3.1'
+services:
+  typo3:
+    image: typo3/typo3-cms
+    volumes:
+      - ./:/var/www/html
+    ports:
+      - "80"
+    depends_on:
+      - mariadb
+
+  db:
+    image: mariadb
+    volumes:
+      - ./data/var/lib/mariadb
+    restart: always
+    environment:
+       MARIADB_ROOT_PASSWORD: example
